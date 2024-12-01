@@ -82,7 +82,7 @@ def main():
 
             # subset data based on submission date
             now = datetime.now()
-            twelve_hours_ago = now - timedelta(hours=12)
+            twelve_hours_ago = now - timedelta(hours=18)
 
             data_subset['date_time'] = pd.to_datetime(data_subset['date_time'])
             data_subset = data_subset[(data_subset['date_time'] >= twelve_hours_ago) & (data_subset['date_time'] <= now)]
