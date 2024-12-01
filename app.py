@@ -7,9 +7,9 @@ import pandas as pd
 from datetime import datetime, timedelta
 import plotly.express as px
 
-def authenticate_google_sheets(credentials_file, sheet_name):
+def authenticate_google_sheets(credentials, sheet_name):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name(credentials_file, scope)
+    creds = credentials
     client = gspread.authorize(creds)
     sheet = client.open(sheet_name).sheet1  # Access the first sheet
     return sheet
