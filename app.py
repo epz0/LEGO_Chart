@@ -6,13 +6,31 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 from datetime import datetime, timedelta
 import plotly.express as px
+import os
+from dotenv import load_dotenv
+import json
+
+# Load environment variables from .env file
+load_dotenv()
 
 def authenticate_google_sheets(credentials, sheet_name):
+
+
     scope = [
         "https://www.googleapis.com/auth/spreadsheets",
         "https://www.googleapis.com/auth/drive"
     ]
-    creds = credentials
+
+    if not credentials:
+        raise ValueError("Environment variable GOOGLE_APPLICATION_CREDENTIALS_JSON is not set!")
+
+    # Convert the JSON string to a dictionary
+    credentials_dict = json.loads(credentials)
+
+    # Create credentials from the dictionary
+    creds = service_account.Credentials.from_service_account_info(credentials_dict, scopes=scope)
+
+    # Authenticate with gspread
     client = gspread.authorize(creds)
     sheet = client.open(sheet_name).sheet1  # Access the first sheet
     return sheet
@@ -48,14 +66,16 @@ def main():
 
     st.title("Design Space - LEGO Activity")
 
-    credentials_dict = st.secrets["google_credentials"]
-    creds = service_account.Credentials.from_service_account_info(credentials_dict)
+    #credentials_dict = st.secrets["google_credentials"]
+    #creds = service_account.Credentials.from_service_account_info(credentials_dict)
+
+    google_credentials_json = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON")
 
     # Input: Google Sheets details
     sheet_name = "DB_LegoActivity"
 
     try:
-            sheet = authenticate_google_sheets(creds, sheet_name)
+            sheet = authenticate_google_sheets(google_credentials_json, sheet_name)
             data = get_data_from_sheet(sheet)
             data_subset = data[["date_time", "initials", "height", "weight"]].copy()
             data_subset['performance'] = (data_subset['height'] / data_subset['weight']).round(2)
