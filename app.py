@@ -116,7 +116,7 @@ def main():
     }
     </style>
     <div class="footer">
-        <p>Developed by <a href="https://esdrasparavizo.com" target="_blank">Esdras Paravizo</a> | <a href="https://doi.org/10.17863/CAM.111233" target="_blank">Download the activity</a></p>
+        <p>Developed by <a href="https://esdrasparavizo.com" target="_blank">Esdras Paravizo</a> | <a href="https://doi.org/10.17863/CAM.111233" target="_blank">Download the activity</a> | <a href="https://bit.ly/DS-Lego" target="_blank">Submit a solution</a> </p>
     </div>
     """
     st.markdown(footer, unsafe_allow_html=True)
